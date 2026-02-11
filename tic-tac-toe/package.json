@@ -2,6 +2,7 @@
   "name": "tic-tac-toe",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://xorblo-doitus.github.io/tims-technical-test/",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
