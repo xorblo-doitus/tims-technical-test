@@ -87,6 +87,8 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 	}
 	
 	function checkWinner(): number {
+		// TODO should return 0 for draw and null for ongoing game instead
+		
 		for (const row of board) {
 			if (Math.abs(row.reduce((a,b)=>a+b)) == nbColumns) {
 				return row[0];
