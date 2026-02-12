@@ -1,14 +1,31 @@
 import { useState, type ReactNode } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
 
 
-function valueToText(value: number) {
+function playerToMark(value: number): string {
 	switch (value) {
-		case 0: return " ";
-		case -1: return "X";
-		case 1: return "O";
+		case 0: return "  ";
+		case -1: return "╳";
+		case 1: return "◯";
+		default: return "?";
+	}
+}
+
+function playerToClass(player: number): string {
+	switch (player) {
+		case -1: return "left-player";
+		case 1: return "right-player";
+		default: return "no-player";
+	}
+}
+
+function playerToText(player: number): string {
+	switch (player) {
+		case -1: return "joueur de gauche";
+		case 1: return "joueur de droite";
+		default: return "[erreur : joueur inconnu]";
 	}
 }
 
@@ -20,8 +37,33 @@ function Square({value, clickCallback}: {value: number, clickCallback: React.Mou
 			className="square"
 			onClick={clickCallback}
 		>
-			{valueToText(value)}
+			{playerToMark(value)}
 		</button>
+	</>
+}
+
+
+function PlayerMessage({player}: {player: number}) {
+	if (player == 0) {
+		return <></>;
+	}
+	return <>
+		<div className={"player-msg " + playerToClass(player)}>
+			Au tour du {playerToText(player)} ({playerToMark(player)})
+		</div>
+	</>
+}
+
+
+function WinnerMessage({winner}: {winner: number}) {
+	if (winner == 0) {
+		return <></>;
+	}
+	return <>
+		<div className="winner-msg">
+			<p>Le {playerToText(winner)} a gagné !</p>
+			<p>Cliquez sur recommencer pour jouer à nouveau.</p>
+		</div>
 	</>
 }
 
@@ -30,6 +72,7 @@ function Square({value, clickCallback}: {value: number, clickCallback: React.Mou
 function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 	const [board, setBoard] = useState(createBoard());
 	const [player, setPlayer] = useState(1);
+	const winner = checkWinner();
 	
 	function createBoard(): number[][] {
 		const board: number[][] = [];
@@ -43,8 +86,26 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 		return board;
 	}
 	
+	function checkWinner(): number {
+		for (const row of board) {
+			if (Math.abs(row.reduce((a,b)=>a+b)) == nbColumns) {
+				return row[0];
+			}
+		}
+		
+		for (let y = 0; y < nbColumns; y++) {
+			if (Math.abs(board.reduce((sum, row)=>sum+row[y], 0)) == nbRows) {
+				return board[y][0];
+			}
+		}
+		
+		// TODO check diagonals
+		
+		return 0;
+	}
+	
 	function onSquareClicked(x: number, y: number) {
-		if (board[x][y] != 0) {
+		if (board[x][y] != 0 || checkWinner() != 0) {
 			return;
 		}
 		
@@ -54,19 +115,35 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 		setBoard(newBoard);
 	}
 	
+	function restart() {
+		setBoard(createBoard());
+	}
+	
+	
 	const squares: ReactNode[] = []
 	for (let x = 0; x < nbColumns; x++) {
 		for (let y = 0; y < nbRows; y++) {
-			squares.push(<Square value={board[x][y]} clickCallback={() => onSquareClicked(x, y)} />)
+			squares.push(<Square
+				value={board[x][y]}
+				clickCallback={() => onSquareClicked(x, y)}
+				key={x*nbColumns+y}
+			/>);
 		}
 	}
 	
+	if (nbColumns == 0 || nbRows == 0) {
+		return <>
+			<div className="error">Erreur : Le plateau ne peut avoir une dimension à 0.</div>
+		</>
+	}
+	
 	return <>
-		{player==-1?<div className='leftPlayer'>Au tour du joueur de gauche ({valueToText(player)})</div>:
-		<div className='rightPlayer'>Au tour du joueur de droite ({valueToText(player)})</div>}
-		<div className="board">
+		<PlayerMessage player={player} />
+		<div className="squares">
 			{squares}
 		</div>
+		<WinnerMessage winner={winner} />
+		<button className="restart" onClick={restart}>Recommencer</button>
 	</>
 }
 
@@ -129,31 +206,11 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 
 
 function App() {
-	const [count, setCount] = useState(0)
+	// const [count, setCount] = useState(0)
 
 	return (
 		<>
 			<Board nbColumns={3} nbRows={3} />
-			<div>
-				<a href="https://vite.dev" target="_blank">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
 		</>
 	)
 }
