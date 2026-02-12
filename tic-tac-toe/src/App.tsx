@@ -38,8 +38,8 @@ function playerToClass(player: Player): string {
 
 function playerToText(player: Player): string {
 	switch (player) {
-		case PLAYER_LEFT: return "joueur de gauche";
-		case PLAYER_RIGHT: return "joueur de droite";
+		case PLAYER_LEFT: return "joueur à gauche";
+		case PLAYER_RIGHT: return "joueur à droite";
 		default: return "[erreur : joueur inconnu]";
 	}
 }
