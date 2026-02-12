@@ -2,7 +2,9 @@
 
 ## Part 1
 
-See [`part-1-Algorithm/`](part-1-Algorithm) folder and it's [`README`](part-1-Algorithm/README.md)
+Each exercise has it's own file in the [`part-1-Algorithm/`](part-1-Algorithm) folder.
+
+Note: I used Python 3.12.9
 
 
 ## Part 2 (Tic-tac-toe)
