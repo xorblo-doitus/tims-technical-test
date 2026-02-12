@@ -2,14 +2,14 @@
 
 ## Part 1
 
-Each exercise has it's own file in the [`part-1-Algorithm/`](part-1-Algorithm) folder.
+Each exercise has its own file in the [`part-1-Algorithm/`](part-1-Algorithm) folder.
 
 Note: I used Python 3.12.9
 
 
 ## Part 2 (Tic-tac-toe)
 
-I never used any web framework extensively, so I choosed to use **React**, as it's
+I never used any web framework extensively, so I chose to use **React**, as it's
 the one you mention in your internship offer, in order to prepare myself.
 
 Since I was discovering React, I started with the basic template suggested by
@@ -19,12 +19,14 @@ the [documentation](https://react.dev/learn/build-a-react-app-from-scratch#vite)
 npm create vite@latest my-app -- --template react-ts
 ```
 
-Then I kind of followed [the exemple project tutorial](https://react.dev/learn/tutorial-tic-tac-toe), but not too much because it was a tic tac toe...
-So I avoided looking at the given exemples.
+Then I kind of followed [the example project tutorial](https://react.dev/learn/tutorial-tic-tac-toe), but not too much because it was a tic-tac-toe...
+So I avoided looking at the given examples.
 Instead, I mainly consulted the documentation and stackoverflow to figure out how
 to do things.
 
-I have almost only modified code in [`tic-tac-toe/src/`](tic-tac-toe/src) (appart from a few config files to make `npm run deploy` deploy to [GitHub Pages](https://xorblo-doitus.github.io/tims-technical-test/))
+I have almost only modified code in [`tic-tac-toe/src/`](tic-tac-toe/src)
+(appart from a few config files to make `npm run deploy` deploy to
+[GitHub Pages](https://xorblo-doitus.github.io/tims-technical-test/))
 
 To test the project locally:
 
@@ -54,6 +56,5 @@ npm run dev
 
 ### What I would have done if I had more time
 
-- Create a SVG for the cross, the circle and custom favicon.
+- Create an SVG for the cross, the circle, and the favicon.
 - Refactor
-- 

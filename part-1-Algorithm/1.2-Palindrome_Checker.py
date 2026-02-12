@@ -4,7 +4,7 @@ IGNORED_CHARACTERS = " .?!,;:-"
 # Note: I wrote different implementations just to test how much relying
 # on the C code of Python is faster. It turns out the naive approach
 # is almost always the fastest. But `is_palindrome_manual_half()` is faster
-# when giving a 1000 letters long non-palindrome.
+# when giving a 1000-letter-long non-palindrome.
 # Anyway, since we use the function only on small strings, optimisation
 # is not really a concern. This was just out of curiosity.
 
@@ -64,7 +64,7 @@ def is_sentence_palindrome(text: str) -> bool:
 
 if __name__ == "__main__":
 	def test():
-		EXEMPLES = {
+		EXAMPLES = {
 			"abcd": False,
 			"abcde": False,
 			"abbd": False,
@@ -79,7 +79,7 @@ if __name__ == "__main__":
 			"": True,
 		}
 		
-		for text, expected in EXEMPLES.items():
+		for text, expected in EXAMPLES.items():
 			assert expected == is_sentence_palindrome(text)
 	
 	test()

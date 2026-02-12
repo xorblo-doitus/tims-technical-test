@@ -34,7 +34,7 @@ def main():
 
 if __name__ == "__main__":
 	def test():
-		EXEMPLE = [
+		EXAMPLE = [
 			1,
 			2,
 			"Fizz",
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 			16,
 		]
 		
-		assert EXEMPLE == list(map(nb_to_message, range(1, 17)))
+		assert EXAMPLE == list(map(nb_to_message, range(1, 17)))
 	
 	test()
 	main()
