@@ -1,7 +1,5 @@
 .squares {
 	display: grid;
-	/* Hard coded 3 columns */
-	grid-template-columns: repeat(3, auto);
 	gap: 2ch;
 	margin: 1em;
 }
@@ -23,8 +21,12 @@
 	text-align: center;
 }
 
+.square.winning {
+	background-color: #004b00;
+}
+
 .error {
-	color: darkred;
+	color: tomato;
 }
 
 
@@ -35,4 +37,14 @@
 	margin: 0 auto;
 	padding: 2rem;
 	text-align: center;
+}
+
+@media (prefers-color-scheme: light) {
+	.square.winning {
+		background-color: #cfffcf;
+	}
+	
+	.error {
+		color: darkred;
+	}
 }
