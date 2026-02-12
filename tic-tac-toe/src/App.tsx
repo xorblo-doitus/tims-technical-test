@@ -58,12 +58,13 @@ function Square({player, inWinningLine, clickCallback}: {player: Player, inWinni
 
 
 function PlayerMessage({player}: {player: Player}) {
-	if (player === PLAYER_NONE) {
-		return <></>;
-	}
 	return <>
 		<div className={"player-msg " + playerToClass(player)}>
-			Au tour du {playerToText(player)} ({playerToMark(player)})
+			{
+				player === PLAYER_NONE
+				? <>Fin</>
+				: <>Au tour du {playerToText(player)} ({playerToMark(player)})</>
+			}
 		</div>
 	</>
 }
@@ -71,7 +72,12 @@ function PlayerMessage({player}: {player: Player}) {
 
 function WinnerMessage({winner}: {winner: Player|null}) {
 	if (winner === null) {
-		return <></>;
+		return <>
+			<div>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+			</div>
+		</>;
 	}
 	return <>
 		<div className="winner-msg">
@@ -87,9 +93,7 @@ function WinnerMessage({winner}: {winner: Player|null}) {
 
 
 
-function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
-	const winLength = 3;
-	
+function Board({nbColumns, nbRows, winLength}: {nbColumns: number, nbRows: number, winLength: number}) {
 	const [board, setBoard] = useState(createBoard());
 	const [player, setPlayer] = useState(PLAYER_LEFT);
 	const [winner, winningLine]: [Player|null, Position[]] = checkWinner();
@@ -112,10 +116,10 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 	}
 	
 	
-	function checkWinnerOnLine(positions: Position[]): [Player|null, Position[]] {
+	function checkWinnerOnLine(line: Position[]): [Player|null, Position[]] {
 		let streak: Position[] = []
 		
-		for (const position of positions) {
+		for (const position of line) {
 			const player = getPlayerMarkAt(position);
 			
 			if (player != PLAYER_NONE && (streak.length === 0 || player === getPlayerMarkAt(streak.at(-1)!))) {
@@ -138,17 +142,16 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 	
 	
 	function* getVerticalLines(): Generator<Position[], void, void> {
-		for (let y = 0; y < nbColumns; y++) {
+		for (let y = 0; y < nbRows; y++) {
 			const line: Position[] = [];
 			
-			for (let x = 0; x < nbRows; x++) {
+			for (let x = 0; x < nbColumns; x++) {
 				line.push({x: x, y: y});
 			}
 			
 			yield line;
 		}
 	}
-	
 	
 	function* getHorizontalLines(): Generator<Position[], void, void> {
 		for (let x = 0; x < nbColumns; x++) {
@@ -183,7 +186,6 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 		}
 	}
 	
-	
 	function* getAllLines(): Generator<Position[], void, void> {
 		for (const line of getVerticalLines()) {
 			yield line;
@@ -217,10 +219,11 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 		return [null, []];
 	}
 	
+	
 	function onSquareClicked(position: Position) {
 		const {x, y} = position;
 		
-		if (board[x][y] !== PLAYER_NONE || checkWinner()[0] !== null) {
+		if (board[x][y] !== PLAYER_NONE || winner !== null) {
 			return;
 		}
 		
@@ -255,22 +258,75 @@ function Board({nbColumns, nbRows}: {nbColumns: number, nbRows: number}) {
 		</>
 	}
 	
-	return <>
-		{winner === null ? <PlayerMessage player={player} /> : null}
+	return <div>
+		<PlayerMessage player={winner == null ? player : PLAYER_NONE} />
 		<div className="squares" style={{gridTemplateColumns: `repeat(${nbColumns}, auto)`}}>
 			{squares}
 		</div>
 		<WinnerMessage winner={winner} />
 		<button className="restart" onClick={restart}>Recommencer</button>
-	</>
+	</div>
 }
 
 
 
 function App() {
+	const [nbRows, setNbRows] = useState(3);
+	const [nbColumns, setNbColumns] = useState(3);
+	const [winLength, setWinLength] = useState(3);
+	const [newNbRows, setNewNbRows] = useState(3);
+	const [newNbColumns, setNewNbColumns] = useState(3);
+	
+	function applySizeAndRestart(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		event.preventDefault();
+		setNbRows(newNbRows);
+		setNbColumns(newNbColumns);
+	}
+	
 	return (
 		<>
-			<Board nbColumns={3} nbRows={3} />
+			<Board
+				nbColumns={nbRows}
+				nbRows={nbColumns}
+				winLength={winLength}
+				key={nbRows + "-" + nbColumns} // Resets the board when changed
+			/>
+			
+			<form>
+				<div className="field">
+					<label htmlFor="nb-to-win">Longeur gagnante&nbsp;:</label>
+					<input
+						type="number"
+						name="nb-to-win"
+						id="nb-to-win"
+						value={winLength}
+						min={1}
+						max={Math.max(newNbColumns, newNbRows)}
+						onChange={event=>setWinLength(parseInt(event.target.value))}
+					/>
+				</div>
+				<div className="field">
+					<label htmlFor="nb-rows">Nombre de lignes&nbsp;:</label>
+					<input
+						type="number"
+						name="nb-rows"
+						id="nb-rows"
+						value={newNbRows}
+						onChange={event=>setNewNbRows(parseInt(event.target.value))}
+					/>
+				</div>
+				<div className="field">
+					<label htmlFor="nb-columns">Nombre de colonnes&nbsp;:</label>
+					<input
+						type="number"
+						name="nb-columns"
+						id="nb-columns"
+						value={newNbColumns}
+						onChange={event=>setNewNbColumns(parseInt(event.target.value))}
+					/>
+				</div>
+				{newNbColumns!=nbColumns || newNbRows!=nbRows?<button type="submit" onClick={applySizeAndRestart}>Recommencer et appliquer</button>:<></>}
+			</form>
 		</>
 	)
 }

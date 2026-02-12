@@ -1,7 +1,9 @@
 .squares {
 	display: grid;
-	gap: 2ch;
+	gap: 1ch;
 	margin: 1em;
+	justify-content: center;
+	align-content: center;
 }
 
 .player-msg.left-player {
@@ -13,7 +15,7 @@
 }
 
 .square {
-	width: 5ch;
+	width: 4ch;
 	aspect-ratio: 1;
 	
 	padding: 0;
@@ -30,15 +32,6 @@
 }
 
 
-/* Default styling from the template */
-
-#root {
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 2rem;
-	text-align: center;
-}
-
 @media (prefers-color-scheme: light) {
 	.square.winning {
 		background-color: #cfffcf;
@@ -47,4 +40,31 @@
 	.error {
 		color: darkred;
 	}
+}
+
+
+form {
+	margin: 1em;
+}
+
+.field {
+	margin: 0.5em;
+}
+
+label {
+	margin-right: 1ch;
+}
+
+input[type="number"] {
+	max-width: 5ch;
+}
+
+
+/* Default styling from the template */
+
+#root {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 2rem;
+	text-align: center;
 }
