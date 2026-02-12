@@ -3,13 +3,14 @@
 ## Part 1
 
 Each exercise has its own file in the [`part-1-Algorithm/`](part-1-Algorithm) folder.
+Answers to questions are written directly in this files as comments.
 
 Note: I used Python 3.12.9
 
 
 ## Part 2 (Tic-tac-toe)
 
-I never used any web framework extensively, so I chose to use **React**, as it's
+I never used any web framework extensively, so I chose to use React, as it's
 the one you mention in your internship offer, in order to prepare myself.
 
 Since I was discovering React, I started with the basic template suggested by
@@ -57,4 +58,4 @@ npm run dev
 ### What I would have done if I had more time
 
 - Create an SVG for the cross, the circle, and the favicon.
-- Refactor
+- Refactor (`App.tsx` holds too much code)

@@ -63,7 +63,7 @@ function PlayerMessage({player}: {player: Player}) {
 			{
 				player === PLAYER_NONE
 				? <>Fin</>
-				: <>Au tour du {playerToText(player)} ({playerToMark(player)})</>
+				: <>Au tour du {playerToText(player)} : {playerToMark(player)}</>
 			}
 		</div>
 	</>
@@ -247,7 +247,7 @@ function Board({nbColumns, nbRows, winLength}: {nbColumns: number, nbRows: numbe
 				player={board[x][y]}
 				inWinningLine={winningLine.some(winningPosition => arePositionsEqual(winningPosition, position))}
 				clickCallback={() => onSquareClicked(position)}
-				key={x*nbColumns+y}
+				key={x*nbRows+y}
 			/>);
 		}
 	}
@@ -301,7 +301,7 @@ function App() {
 						id="nb-to-win"
 						value={winLength}
 						min={1}
-						max={Math.max(newNbColumns, newNbRows)}
+						max={Math.max(newNbColumns, newNbRows, nbRows, nbColumns)}
 						onChange={event=>setWinLength(parseInt(event.target.value))}
 					/>
 				</div>
